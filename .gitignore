@@ -1,0 +1,9 @@
+# Enviroment
+.env
+# Caddy
+caddy/config/
+caddy/data/
+# Tailscale
+tailscale/
+# UE Horde
+data/

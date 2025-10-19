@@ -1,0 +1,7 @@
+https://ue-horde.{$CADDY_DOMAIN} {
+    tls {
+        dns infomaniak {$CADDY_INFOMANIAK_APITOKEN}
+    }
+
+    reverse_proxy http://horde-server:{$CADDY_HORDE_PORT}
+}

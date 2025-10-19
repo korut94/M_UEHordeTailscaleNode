@@ -1,0 +1,76 @@
+services:
+  tailscale:
+    image: tailscale/tailscale:stable
+    container_name: tailscale-horde
+    hostname: ue-horde
+    restart: unless-stopped
+    environment:
+      - TS_STATE_DIR=/var/lib/tailscale
+      - TS_USERSPACE=false
+    env_file:
+      - .env
+    volumes:
+      - ./tailscale/config:/etc/tailscale
+      - ./tailscale/state:/var/lib/tailscale
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    cap_add:
+      - net_admin
+
+  mongodb:
+    image: mongo:7.0.5-jammy
+    container_name: mongodb-horde
+    restart: always
+    env_file:
+      - .env
+    command: --quiet --logpath /dev/null
+    ports:
+      - 27017:27017
+    volumes:
+      - mongodb:/data/db
+
+  redis:
+    image: redis:6.2-alpine
+    container_name: redis-horde
+    restart: always
+    command: redis-server --save 60 1 --port 30002 --loglevel warning
+    ports:
+      - 30002:30002
+    volumes:
+      - redis:/data
+
+  horde-server:
+    image: ghcr.io/epicgames/horde-server:latest
+    container_name: horde-server
+    restart: always
+    env_file:
+      - .env
+    depends_on:
+      - redis
+      - mongodb
+    ports:
+      - 13340:13340 # HTTP/1
+      - 13342:13342 # HTTP/2
+    volumes:
+      - ./data:/app/Data
+
+  caddy:
+    build: ./caddy
+    container_name: caddy-horde
+    restart: unless-stopped
+    env_file:
+      - .env
+    depends_on:
+      - tailscale
+    volumes:
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile
+      - ./caddy/data:/data
+      - ./caddy/config:/config
+    network_mode: service:tailscale
+
+# Provide persistence between container restarts for MongoDB and Redis
+volumes:
+  mongodb:
+    driver: local
+  redis:
+    driver: local

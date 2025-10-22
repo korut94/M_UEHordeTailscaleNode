@@ -3,5 +3,17 @@ https://ue-horde.{$CADDY_DOMAIN} {
         dns infomaniak {$CADDY_INFOMANIAK_APITOKEN}
     }
 
-    reverse_proxy http://horde-server:{$CADDY_HORDE_PORT}
+    reverse_proxy horde-server:{$Horde__HttpPort}
+}
+
+http://ue-horde.{$CADDY_DOMAIN} {
+    reverse_proxy /api* horde-server:{$Horde__HttpPort}
+}
+
+http://ue-horde.{$CADDY_DOMAIN}:{$Horde__Http2Port} {
+    reverse_proxy horde-server:{$Horde__Http2Port} {
+        transport http {
+            versions h2c
+        }
+    }
 }

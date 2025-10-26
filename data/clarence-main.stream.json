@@ -1,0 +1,107 @@
+{
+	"name": "//Clarence/Main",
+	"clusterName": "Main",
+
+	"macros":
+	[
+		{
+			"name": "Project",
+			"value": "Clarence"
+		},
+		{
+			"name": "ProjectPath",
+			"value": "Cthulhu/Cthulhu.uproject"
+		},
+		{
+			"name": "GameTarget",
+			"value": "Cthulhu"
+		},
+		{
+			"name": "EditorTarget",
+			"value": "CthulhuEditor"
+		}
+	],
+
+	"tabs":
+	[
+		{
+			"title": "Incremental",
+			"style": "Compact",
+			"templates":
+			[
+				"incremental-build"
+			],
+			"columns":
+			[
+				{
+					"heading": "Editors",
+					"category": "Editors",
+					"relativeWidth": 2
+				},
+				{
+					"heading": "Target Platforms",
+					"category": "Platforms",
+					"relativeWidth": 4
+				}
+			]
+		}
+	],
+
+	"agentTypes":
+	{
+		"IncrementalWin64":
+		{
+			"pool": "win-ue5",
+			"workspace": "IncrementalCompileOnly"
+		}
+	},
+
+	"workspaceTypes":
+	{
+		"IncrementalCompileOnly":
+		{
+			"identifier": "ClaMInc",
+			"incremental": true,
+			"view":
+			[
+				"-*.uasset",
+				"-*.umap"
+			],
+			"method": "name=managedWorkspace&preferNativeClient=true"
+		}
+	},
+
+	"artifactTypes": [
+		{
+			"type": "packaged-build",
+			"keepDays": 14
+		},
+		{
+			"type": "staged-build",
+			"keepDays": 14
+		},
+		{
+			"type": "ugs-pcb",
+			"keepCount": 5
+		}
+	],
+
+	"templates":
+	[
+		{
+			"id": "incremental-build",
+			"name": "Incremental Build",
+			"description": "Performs an incremental editor compile, and uploads the produced binaries to Horde for syncing with UnrealGameSync.",
+			"initialAgentType": "IncrementalWin64",
+			"showUgsBadges": true,
+			"arguments":
+			[
+				"-Script=Engine/Build/Graph/Examples/BuildEditorAndTools.xml",
+				"-Target=Submit PCBs",
+				"-set:UProjectPath=$(ProjectPath)",
+				"-set:EditorTarget=$(EditorTarget)",
+				"-set:PreferredAgent=IncrementalWin64"
+			]
+		}
+	]
+}

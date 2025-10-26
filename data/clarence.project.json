@@ -1,0 +1,11 @@
+{
+	"name": "Clarence",
+	"logo": "clarence.png",
+	"logoDarkTheme": "clarence.png",
+	"streams": [
+		{
+		  "id": "clarence-main",
+		  "path": "clarence-main.stream.json"
+		}
+	]
+}

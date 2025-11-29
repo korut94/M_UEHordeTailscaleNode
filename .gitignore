@@ -17,3 +17,5 @@ data/Logs
 data/Storage
 data/globals.json
 data/server.json
+data/ue5-release-5.6.stream.json
+data/ue5.project.json

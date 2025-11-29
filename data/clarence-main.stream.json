@@ -101,6 +101,17 @@
 				"-set:UProjectPath=$(ProjectPath)",
 				"-set:EditorTarget=$(EditorTarget)",
 				"-set:PreferredAgent=IncrementalWin64"
+			],
+			"parameters":
+			[
+				{
+    				"type": "Bool",
+    				"label": "Include Engine",
+    				"toolTip": "Include engine binaries and symbols in PCBs",
+    				"argumentIfEnabled": "-set:UGSWithEngine=true",
+    				"argumentIfDisabled": "-set:UGSWithEngine=false",
+					"default": false
+				}
 			]
 		}
 	]

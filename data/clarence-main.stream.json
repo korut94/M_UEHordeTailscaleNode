@@ -112,7 +112,22 @@
     				"argumentIfDisabled": "-set:UGSWithEngine=false",
 					"default": false
 				}
-			]
+			],
+			"schedule":
+			{
+				"enabled": true,
+				"maxActive": 1,
+				"maxChanges": 0,
+				"requireSubmittedChange": true,
+				"filter": [ "ContainsCode" ],
+				"patterns":
+				[
+					{
+						"dayOfWeek": null,
+						"interval": 1 // minutes
+					}
+				]
+			}
 		}
 	]
 }
